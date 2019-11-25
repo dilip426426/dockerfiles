@@ -1,19 +1,24 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 
-RUN apt-get update && apt-get install -y git gnupg flex bison gperf \
-    zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \
-    libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev \
-    mingw32 tofrodos python-markdown libxml2-utils xsltproc zlib1g-dev:i386
+# XDA
+RUN apt-get update && apt-get install -y git-core gnupg flex bison gperf \
+    build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 \
+    lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev \
+    libxml2-utils xsltproc unzip python-networkx libswitch-perl schedtool wget
 
-# Not working
-# RUN apt-get install -y build-essential g++-multilib
+# AOSP
+# RUN apt-get update && apt-get install -y git-core gnupg flex bison gperf \
+#    build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 \
+#    lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev \
+#    libxml2-utils xsltproc unzip wget
 
-RUN ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so
+RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /home/repo && \
+    chmod a+x /home/repo
 
 COPY jdk-6u45-linux-x64.bin /home/
 
 RUN cd /home/ && chmod 777 /home/jdk-6u45-linux-x64.bin && ./jdk-6u45-linux-x64.bin && rm -rf jdk-6u45-linux-x64.bin
 
-ENV PATH="/home/jdk1.6.0_45/bin:${PATH}"
+ENV PATH="/home/jdk1.6.0_45/bin:/home:${PATH}"
 
 CMD ["/bin/bash"]
