@@ -1,0 +1,18 @@
+FROM ubuntu:16.04
+
+RUN apt-get update && apt-get install -y build-essential \
+    chrpath diffstat gawk libncurses5-dev texinfo python2.7 git python3 locales cpio wget
+
+RUN ln -sf /usr/bin/python2.7 /usr/bin/python && ln -sf /usr/bin/python2.7 /usr/bin/python2
+
+RUN dpkg-reconfigure locales && locale-gen en_US.UTF-8 && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+RUN id build 2>/dev/null || useradd --uid 3000 --create-home build
+RUN apt-get install -y sudo
+RUN echo "build ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+
+ENV LANG="en_US.UTF-8"
+
+#USER build
+
+CMD ["/bin/bash"]
