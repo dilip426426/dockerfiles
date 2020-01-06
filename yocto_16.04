@@ -1,4 +1,7 @@
-FROM ubuntu:16.04
+FROM iip-docker.buic-scm-wet.contiwan.com/ubuntu:16.04
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 
 RUN apt-get update && apt-get install -y build-essential \
     chrpath diffstat gawk libncurses5-dev texinfo python2.7 git python3 locales cpio wget
@@ -7,12 +10,12 @@ RUN ln -sf /usr/bin/python2.7 /usr/bin/python && ln -sf /usr/bin/python2.7 /usr/
 
 RUN dpkg-reconfigure locales && locale-gen en_US.UTF-8 && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
-RUN id build 2>/dev/null || useradd --uid 3000 --create-home build
-RUN apt-get install -y sudo
-RUN echo "build ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+RUN groupadd -g ${GROUP_ID} local &&\
+    useradd -l -u ${USER_ID} -g local local &&\
+    install -d -m 0755 -o local -g local /home/local
 
 ENV LANG="en_US.UTF-8"
 
-#USER build
+USER local
 
 CMD ["/bin/bash"]
