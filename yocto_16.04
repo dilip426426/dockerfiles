@@ -1,4 +1,4 @@
-FROM iip-docker.buic-scm-wet.contiwan.com/ubuntu:16.04
+FROM ubuntu:16.04
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
