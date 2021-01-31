@@ -4,7 +4,7 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 
 RUN apt-get update && apt-get install -y build-essential \
-    chrpath diffstat gawk libncurses5-dev texinfo python2.7 git python3 locales cpio wget
+    chrpath diffstat gawk libncurses5-dev texinfo python2.7 git python3 locales cpio wget repo
 
 RUN ln -sf /usr/bin/python2.7 /usr/bin/python && ln -sf /usr/bin/python2.7 /usr/bin/python2
 
